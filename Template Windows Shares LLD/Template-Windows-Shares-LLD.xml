@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.0</version>
-    <date>2021-11-16T11:37:26Z</date>
+    <date>2021-11-16T11:46:08Z</date>
     <groups>
         <group>
             <name>My Templates</name>
@@ -11,11 +11,14 @@
         <template>
             <template>Template Windows Shares LLD</template>
             <name>Template Windows Shares LLD</name>
-            <description>The template discovers all the shares on the Windows server and gets the current connections to each one.&#13;
+            <description>The template discovers all shares on the Windows server and gets the current connections to each one.&#13;
 &#13;
 Requires: &#13;
-Get-SmbShare powershell cmdlet  (Windows Server 2012 and later)&#13;
-Custom zabbix config:</description>
+* Zabbix 4.0.2 and later&#13;
+* Windows Server 2012 and later (Get-SmbShare powershell cmdlet)&#13;
+* Custom zabbix config (check the template link below if you don't have it)&#13;
+&#13;
+Template link: https://github.com/qiwichupa/Zabbix-Templates/tree/main/Template%20Windows%20Shares%20LLD</description>
             <groups>
                 <group>
                     <name>My Templates</name>
