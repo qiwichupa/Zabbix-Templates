@@ -1,4 +1,4 @@
-The template discovers all the shares on the Windows server and gets the current connections to each one.
+The template discovers all shares on the Windows server and gets the current connections to each one.
 
 Requires: 
 * Zabbix 4.0.2 and later
