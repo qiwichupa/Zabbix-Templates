@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.0</version>
-    <date>2021-11-16T11:46:08Z</date>
+    <date>2021-11-16T16:00:22Z</date>
     <groups>
         <group>
             <name>My Templates</name>
@@ -26,13 +26,13 @@ Template link: https://github.com/qiwichupa/Zabbix-Templates/tree/main/Template%
             </groups>
             <applications>
                 <application>
-                    <name>Fileserver</name>
+                    <name>SMB Shares</name>
                 </application>
             </applications>
             <items/>
             <discovery_rules>
                 <discovery_rule>
-                    <name>Share discovery</name>
+                    <name>SMB shares discovery</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -64,11 +64,11 @@ Template link: https://github.com/qiwichupa/Zabbix-Templates/tree/main/Template%
                     <description/>
                     <item_prototypes>
                         <item_prototype>
-                            <name>Share connections: {#SHARENAME}</name>
+                            <name>SMB connections: {#SHARENAME}</name>
                             <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>winshares.sharecount['{#SHARENAME}']</key>
+                            <key>winshares.sharecount[{#SHARENAME}]</key>
                             <delay>1m</delay>
                             <history>7d</history>
                             <trends>365d</trends>
@@ -95,7 +95,7 @@ Template link: https://github.com/qiwichupa/Zabbix-Templates/tree/main/Template%
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>Fileserver</name>
+                                    <name>SMB Shares</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -153,7 +153,7 @@ Template link: https://github.com/qiwichupa/Zabbix-Templates/tree/main/Template%
                                     <type>0</type>
                                     <item>
                                         <host>Template Windows Shares LLD</host>
-                                        <key>winshares.sharecount['{#SHARENAME}']</key>
+                                        <key>winshares.sharecount[{#SHARENAME}]</key>
                                     </item>
                                 </graph_item>
                             </graph_items>
