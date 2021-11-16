@@ -1,1 +1,2 @@
-# Zabbix-Templates
+# Zabbix Templates
+Custom templates for Zabbix
