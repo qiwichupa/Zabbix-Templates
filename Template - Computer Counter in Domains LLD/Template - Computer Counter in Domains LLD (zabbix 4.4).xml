@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>4.4</version>
+    <date>2023-01-24T07:08:51Z</date>
+    <groups>
+        <group>
+            <name>Custom Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template LLD - Computer Counter in Domains</template>
+            <name>Template LLD - Computer Counter in Domains</name>
+            <groups>
+                <group>
+                    <name>Custom Templates</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Domain Computers</name>
+                </application>
+            </applications>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Computer counter - Domains LLD</name>
+                    <key>compcount.domain_lld</key>
+                    <delay>1h</delay>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>PCs in Domain [{#DOMAIN}] (Linux)</name>
+                            <key>compcount.domain_count_lin[{#DOMAIN}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <units>!</units>
+                            <applications>
+                                <application>
+                                    <name>Domain Computers</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>PCs in Domain [{#DOMAIN}] (Other/Unknown OS)</name>
+                            <key>compcount.domain_count_otheros[{#DOMAIN}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <units>!</units>
+                            <applications>
+                                <application>
+                                    <name>Domain Computers</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>PCs in Domain [{#DOMAIN}] (Win Servers)</name>
+                            <key>compcount.domain_count_win_srv[{#DOMAIN}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <units>!</units>
+                            <applications>
+                                <application>
+                                    <name>Domain Computers</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>PCs in Domain [{#DOMAIN}] (Win Workstations)</name>
+                            <key>compcount.domain_count_win_wrkst[{#DOMAIN}]</key>
+                            <delay>1h</delay>
+                            <history>7d</history>
+                            <units>!</units>
+                            <applications>
+                                <application>
+                                    <name>Domain Computers</name>
+                                </application>
+                            </applications>
+                            <request_method>POST</request_method>
+                        </item_prototype>
+                    </item_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>PCs in Domain [{#DOMAIN}]</name>
+                            <type>STACKED</type>
+                            <graph_items>
+                                <graph_item>
+                                    <color>1E1E1E</color>
+                                    <item>
+                                        <host>Template LLD - Computer Counter in Domains</host>
+                                        <key>compcount.domain_count_otheros[{#DOMAIN}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <color>2774A4</color>
+                                    <item>
+                                        <host>Template LLD - Computer Counter in Domains</host>
+                                        <key>compcount.domain_count_win_srv[{#DOMAIN}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <color>4CAF50</color>
+                                    <item>
+                                        <host>Template LLD - Computer Counter in Domains</host>
+                                        <key>compcount.domain_count_win_wrkst[{#DOMAIN}]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>3</sortorder>
+                                    <color>F57C00</color>
+                                    <item>
+                                        <host>Template LLD - Computer Counter in Domains</host>
+                                        <key>compcount.domain_count_lin[{#DOMAIN}]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                    <request_method>POST</request_method>
+                </discovery_rule>
+            </discovery_rules>
+        </template>
+    </templates>
+</zabbix_export>
