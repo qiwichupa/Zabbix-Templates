@@ -1,0 +1,1 @@
+This template is designed for monitoring Logical Volume Management (LVM) in Zabbix systems. It provides automatic discovery of Physical Volumes (PV), Volume Groups (VG) and Thin Pools (TP), as well as collects key metrics, including free, used, and total space.
