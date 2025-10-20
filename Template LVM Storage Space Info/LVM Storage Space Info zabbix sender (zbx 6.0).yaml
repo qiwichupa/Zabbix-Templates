@@ -1,0 +1,291 @@
+﻿zabbix_export:
+  version: '6.0'
+  templates:
+    - uuid: 1663c85121b7493cadd25332a7d933e0
+      template: 'LVM Storage Space Info zabbix sender'
+      name: 'LVM Storage Space Info zabbix sender'
+      groups:
+        - name: Templates
+      discovery_rules:
+        - uuid: e6f150f85446412587bfd45e9090885e
+          name: 'PV Discovery'
+          type: TRAP
+          key: lvm.info.pv.discovery
+          delay: '0'
+          item_prototypes:
+            - uuid: 96c8e24d66a845679d9f28c0cc0e60f3
+              name: 'LVM PV [{#PVID}] Free'
+              type: DEPENDENT
+              key: 'lvm.info.pv.free[{#PVID}]'
+              delay: '0'
+              history: 7d
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.pv_id== ''{#PVID}'')].values.free.first()'
+              master_item:
+                key: 'lvm.info.pv.raw[{#PVID}]'
+              tags:
+                - tag: lvm_info
+                  value: pv
+                - tag: pv_id
+                  value: '{#PVID}'
+                - tag: pv_name
+                  value: '{#PV}'
+                - tag: vg_name
+                  value: '{#VG}'
+            - uuid: 52c2f7ef77344eb5ac63c56446848e6d
+              name: 'LVM VG [{#PVID}] Raw Data'
+              type: TRAP
+              key: 'lvm.info.pv.raw[{#PVID}]'
+              delay: '0'
+              history: 1h
+              value_type: TEXT
+              trends: '0'
+              tags:
+                - tag: lvm_info
+                  value: pv
+                - tag: pv_id
+                  value: '{#PVID}'
+                - tag: pv_name
+                  value: '{#PV}'
+                - tag: vg_name
+                  value: '{#VG}'
+            - uuid: 2755a254984e406d8739da5a21e535b6
+              name: 'LVM PV [{#PVID}] Size'
+              type: DEPENDENT
+              key: 'lvm.info.pv.size[{#PVID}]'
+              delay: '0'
+              history: 7d
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.pv_id== ''{#PVID}'')].values.size.first()'
+              master_item:
+                key: 'lvm.info.pv.raw[{#PVID}]'
+              tags:
+                - tag: lvm_info
+                  value: pv
+                - tag: pv_id
+                  value: '{#PVID}'
+                - tag: pv_name
+                  value: '{#PV}'
+                - tag: vg_name
+                  value: '{#VG}'
+            - uuid: 2cf4cf26d22b4697a547fee762119dd8
+              name: 'LVM PV [{#PVID}] Used'
+              type: DEPENDENT
+              key: 'lvm.info.pv.used[{#PVID}]'
+              delay: '0'
+              history: 7d
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.pv_id== ''{#PVID}'')].values.used.first()'
+              master_item:
+                key: 'lvm.info.pv.raw[{#PVID}]'
+              tags:
+                - tag: lvm_info
+                  value: pv
+                - tag: pv_id
+                  value: '{#PVID}'
+                - tag: pv_name
+                  value: '{#PV}'
+                - tag: vg_name
+                  value: '{#VG}'
+        - uuid: b891b686526a43af84dc085f3819427b
+          name: 'TP Discovery'
+          type: TRAP
+          key: lvm.info.tp.discovery
+          delay: '0'
+          description: 'Thinpool discovery rule'
+          item_prototypes:
+            - uuid: 4cd17dfe826e4b11a597f7441b90abd0
+              name: 'LVM Thinpool [{#TP}] Data Used (%)'
+              type: DEPENDENT
+              key: 'lvm.info.tp.datapersentused[{#TP}]'
+              delay: '0'
+              history: 7d
+              value_type: FLOAT
+              units: '%'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.tp_name == ''{#TP}'')].values.datapersentused.first()'
+              master_item:
+                key: 'lvm.info.tp.raw[{#TP}]'
+              tags:
+                - tag: lvm_info
+                  value: tp
+                - tag: tp_name
+                  value: '{#TP}'
+                - tag: vg_name
+                  value: '{#VG}'
+            - uuid: 051fdc0a951a4f6abddfd3dd2b78f5c6
+              name: 'LVM Thinpool [{#TP}] Metadata Used (%)'
+              type: DEPENDENT
+              key: 'lvm.info.tp.metadatapercentused[{#TP}]'
+              delay: '0'
+              history: 7d
+              value_type: FLOAT
+              units: '%'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.tp_name == ''{#TP}'')].values.metadatapercentused.first()'
+              master_item:
+                key: 'lvm.info.tp.raw[{#TP}]'
+              tags:
+                - tag: lvm_info
+                  value: tp
+                - tag: tp_name
+                  value: '{#TP}'
+                - tag: vg_name
+                  value: '{#VG}'
+            - uuid: 3fda9084e403456f92aa3a324f208dd8
+              name: 'LVM Thinpool [{#TP}] Raw Data'
+              type: TRAP
+              key: 'lvm.info.tp.raw[{#TP}]'
+              delay: '0'
+              history: 1h
+              value_type: TEXT
+              trends: '0'
+              tags:
+                - tag: lvm_info
+                  value: tp
+                - tag: tp_name
+                  value: '{#TP}'
+                - tag: vg_name
+                  value: '{#VG}'
+            - uuid: 0a1244a9b8d7449c80a46731d86c3a95
+              name: 'LVM Thinpool [{#TP}] Size'
+              type: DEPENDENT
+              key: 'lvm.info.tp.size[{#TP}]'
+              delay: '0'
+              history: 7d
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.tp_name == ''{#TP}'')].values.size.first()'
+              master_item:
+                key: 'lvm.info.tp.raw[{#TP}]'
+              tags:
+                - tag: lvm_info
+                  value: tp
+                - tag: tp_name
+                  value: '{#TP}'
+                - tag: vg_name
+                  value: '{#VG}'
+        - uuid: 9af92288fe4d468eaacc5cdbb0f026fc
+          name: 'VG Discovery'
+          type: TRAP
+          key: lvm.info.vg.discovery
+          delay: '0'
+          item_prototypes:
+            - uuid: 71093e6a039b4974834855435e9dcd28
+              name: 'LVM VG [{#VGNAME}] Free'
+              type: DEPENDENT
+              key: 'lvm.info.vg.free[{#VGNAME}]'
+              delay: '0'
+              history: 7d
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.vg_name == ''{#VGNAME}'')].values.free.first()'
+              master_item:
+                key: 'lvm.info.vg.raw[{#VGNAME}]'
+              tags:
+                - tag: lvm_info
+                  value: vg
+                - tag: vg_name
+                  value: '{#VGNAME}'
+            - uuid: a7e2b242547a46cf82435e97471b74c7
+              name: 'LVM VG [{#VGNAME}] LV Count'
+              type: DEPENDENT
+              key: 'lvm.info.vg.lvcount[{#VGNAME}]'
+              delay: '0'
+              history: 7d
+              units: '!'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.vg_name == ''{#VGNAME}'')].values.lv_count.first()'
+              master_item:
+                key: 'lvm.info.vg.raw[{#VGNAME}]'
+              tags:
+                - tag: lvm_info
+                  value: vg
+                - tag: vg_name
+                  value: '{#VGNAME}'
+            - uuid: d7c6d8fec4ec49da87faf16572c7fe60
+              name: 'LVM VG [{#VGNAME}] PV Count'
+              type: DEPENDENT
+              key: 'lvm.info.vg.pvcount[{#VGNAME}]'
+              delay: '0'
+              history: 7d
+              units: '!'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.vg_name == ''{#VGNAME}'')].values.pv_count.first()'
+              master_item:
+                key: 'lvm.info.vg.raw[{#VGNAME}]'
+              tags:
+                - tag: lvm_info
+                  value: vg
+                - tag: vg_name
+                  value: '{#VGNAME}'
+            - uuid: 8ce53f18d72749ac948e05d8d75b905f
+              name: 'LVM VG [{#VGNAME}] Raw Data'
+              type: TRAP
+              key: 'lvm.info.vg.raw[{#VGNAME}]'
+              delay: '0'
+              history: 1h
+              value_type: TEXT
+              trends: '0'
+              tags:
+                - tag: lvm_info
+                  value: vg
+                - tag: vg_name
+                  value: '{#VGNAME}'
+            - uuid: da83a6357c6f4afbb5256c5d2b1e8155
+              name: 'LVM VG [{#VGNAME}] Size'
+              type: DEPENDENT
+              key: 'lvm.info.vg.size[{#VGNAME}]'
+              delay: '0'
+              history: 7d
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.vg_name == ''{#VGNAME}'')].values.size.first()'
+              master_item:
+                key: 'lvm.info.vg.raw[{#VGNAME}]'
+              tags:
+                - tag: lvm_info
+                  value: vg
+                - tag: vg_name
+                  value: '{#VGNAME}'
+            - uuid: 23bdeb820d4b4fd0b6a864ad152cbaca
+              name: 'LVM VG [{#VGNAME}] Used'
+              type: DEPENDENT
+              key: 'lvm.info.vg.used[{#VGNAME}]'
+              delay: '0'
+              history: 7d
+              units: B
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.data[?(@.vg_name == ''{#VGNAME}'')].values.used.first()'
+              master_item:
+                key: 'lvm.info.vg.raw[{#VGNAME}]'
+              tags:
+                - tag: lvm_info
+                  value: vg
+                - tag: vg_name
+                  value: '{#VGNAME}'
