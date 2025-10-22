@@ -1,11 +1,17 @@
-﻿zabbix_export:
+zabbix_export:
   version: '6.0'
+  date: '2025-10-21T09:40:48Z'
+  groups:
+    - uuid: 7df96b18c230490a9a0a9e2307226338
+      name: Templates
   templates:
     - uuid: 4676f9aa731d4140b52fa195fabc4660
       template: 'LVM Storage Space Info zabbix agent passive'
       name: 'LVM Storage Space Info zabbix agent passive'
       description: |
-        run agent as root:
+        give sudo rights to zabbix agent
+        or
+        run agent as root (and remove sudo from lvm_storage_space_info.conf):
         https://www.zabbix.com/documentation/6.0/en/manual/appendix/install/run_agent_as_root
       groups:
         - name: Templates
@@ -14,6 +20,16 @@
           name: 'PV Discovery'
           key: lvm.info.pv.discovery
           delay: 1h
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#PVID}'
+                value: '{$LVM.PV.PVID.MATCHES}'
+                formulaid: A
+              - macro: '{#PVID}'
+                value: '{$LVM.PV.PVID.NOT_MATCHES}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
           item_prototypes:
             - uuid: 9907d956b49d4c8f83f18b81abd16a1e
               name: 'LVM PV [{#PVID}] Free'
@@ -38,12 +54,12 @@
                 - tag: vg_name
                   value: '{#VG}'
             - uuid: fa819c0d986b403892822ccb9fd0d4b3
-              name: 'LVM VG [{#PVID}] Raw Data'
+              name: 'LVM PV [{#PVID}] Raw Data'
               key: 'lvm.info.pv.raw[{#PVID}]'
               delay: 15m
               history: 1h
-              value_type: TEXT
               trends: '0'
+              value_type: TEXT
               tags:
                 - tag: lvm_info
                   value: pv
@@ -101,6 +117,16 @@
           name: 'TP Discovery'
           key: lvm.info.tp.discovery
           delay: 1h
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#TP}'
+                value: '{$LVM.TP.TPNAME.MATCHES}'
+                formulaid: A
+              - macro: '{#TP}'
+                value: '{$LVM.TP.TPNAME.NOT_MATCHES}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
           description: 'Thinpool discovery rule'
           item_prototypes:
             - uuid: 7a793d8151844b4b801fb1a0fb01a581
@@ -150,8 +176,8 @@
               key: 'lvm.info.tp.raw[{#TP}]'
               delay: 15m
               history: 1h
-              value_type: TEXT
               trends: '0'
+              value_type: TEXT
               tags:
                 - tag: lvm_info
                   value: tp
@@ -183,6 +209,16 @@
           name: 'VG Discovery'
           key: lvm.info.vg.discovery
           delay: 1h
+          filter:
+            evaltype: AND
+            conditions:
+              - macro: '{#VGNAME}'
+                value: '{$LVM.VG.VGNAME.MATCHES}'
+                formulaid: A
+              - macro: '{#VGNAME}'
+                value: '{$LVM.VG.VGNAME.NOT_MATCHES}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
           item_prototypes:
             - uuid: bae8a4c8699f4de7a0af1fdf1c1d6aac
               name: 'LVM VG [{#VGNAME}] Free'
@@ -243,8 +279,8 @@
               key: 'lvm.info.vg.raw[{#VGNAME}]'
               delay: 15m
               history: 1h
-              value_type: TEXT
               trends: '0'
+              value_type: TEXT
               tags:
                 - tag: lvm_info
                   value: vg
@@ -286,3 +322,22 @@
                   value: vg
                 - tag: vg_name
                   value: '{#VGNAME}'
+      macros:
+        - macro: '{$LVM.PV.PVID.MATCHES}'
+          value: ^.+$
+          description: 'white list of PV blkid. Default: ^.+$'
+        - macro: '{$LVM.PV.PVID.NOT_MATCHES}'
+          value: '(^\s*$)'
+          description: 'black list of PV blkid. Default: (^\s*$)'
+        - macro: '{$LVM.TP.TPNAME.MATCHES}'
+          value: ^.+$
+          description: 'white list of Thinpool names. Default: ^.+$'
+        - macro: '{$LVM.TP.TPNAME.NOT_MATCHES}'
+          value: '(^\s*$)'
+          description: 'black list of Thinpool names. Default: (^\s*$)'
+        - macro: '{$LVM.VG.VGNAME.MATCHES}'
+          value: ^.+$
+          description: 'white list of VG names. Default: ^.+$'
+        - macro: '{$LVM.VG.VGNAME.NOT_MATCHES}'
+          value: '(^\s*$)'
+          description: 'black list of VG names. Default: (^\s*$)'
